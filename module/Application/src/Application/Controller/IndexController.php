@@ -22,19 +22,11 @@ class IndexController extends AbstractActionController
         return new ViewModel(array('beers' => $beers));
     }
 
-    public function createAction()
-    {
-        $form = $this->getServiceLocator()->get('Application\Form\Beer');
-        $form->setAttribute('action', '/insert');
-        $form->get('send')->setAttribute('value', 'Salvar');
-
-        return new ViewModel(['beerForm' => $form]);
-    }
-
     public function insertAction()
     {
         $form = $this->getServiceLocator()->get('Application\Form\Beer');
         $form->setAttribute('action', '/insert');
+        $form->get('send')->setAttribute('value', 'Criar Beer');
         $tableGateway = $this->getServiceLocator()->get('Application\Model\BeerTableGateway');
         $beer = new \Application\Model\Beer;
         $request = $this->getRequest();
@@ -52,7 +44,27 @@ class IndexController extends AbstractActionController
                 return $this->redirect()->toUrl('/');
             }
         }
+        // Verifica se o form é de edição
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if ($id > 0) {
+            $beer = $tableGateway->get($id);
+            $form->setAttribute('action', '/insert');
+            $form->get('send')->setAttribute('value', 'Editar Beer');
+            $form->bind($beer);
+        }
 
         return new ViewModel(['beerForm' => $form]);
+    }
+
+    public function deleteAction(){
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if ($id == 0) {
+            throw new \Exception("Código obrigatório");
+        }
+        /* remove o registro e redireciona para a página inicial*/
+        $tableGateway = $this->getServiceLocator()
+                      ->get('Application\Model\BeerTableGateway')
+                      ->delete($id);
+        return $this->redirect()->toUrl('/');
     }
 }

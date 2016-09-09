@@ -1,5 +1,25 @@
-<a href="/create">Adicionar cerveja</a>
+<a href="/insert" class="btn btn-default"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Adicionar cerveja</a>
 <br>
-<?php foreach ($beers as $beer): ?>
-    <?php echo $beer->name;?> <br>
-<?php endforeach;?>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Beer</th>
+            <th>Style</th>
+            <th class="text-center">Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($beers as $beer): ?>
+        <tr>
+            <th scope="row"><?php echo $beer->id; ?></th>
+            <td><?php echo $beer->name; ?></td>
+            <td><?php echo $beer->style; ?></td>
+            <td class="text-center">
+                <?php echo '<a href="/edit/'.$beer->id.'" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</a>';?>
+                <?php echo '<a href="/delete/'.$beer->id.'" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remover</a>';?>
+            </td>
+        </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

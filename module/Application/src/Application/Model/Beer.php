@@ -80,8 +80,14 @@ class Beer
     public function exchangeArray($data)
     {
         $this->id     = (!empty($data['id'])) ? $data['id'] : null;
-        $this->name = (!empty($data['name'])) ? $data['name'] : null;
+        $this->name   = (!empty($data['name'])) ? $data['name'] : null;
         $this->style  = (!empty($data['style'])) ? $data['style'] : null;
-        $this->img  = (!empty($data['img'])) ? $data['img'] : null;
+        $this->img    = (!empty($data['img'])) ? $data['img'] : null;
+    }
+
+    //necessário para o uso dos forms
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
     }
 }
